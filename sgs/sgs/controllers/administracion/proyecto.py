@@ -21,6 +21,17 @@ class ProyectoRestController(RestController):
         tmpl_context.widget = new_proyecto_form
         return dict(value=kw)
 
+
+    @validate(new_proyecto_form, error_handler=new)
+    @expose()
+    def post(self, _method='', **kw):
+        del kw['sprox_id']
+        proyecto = Proyecto(**kw)
+        DBSession.add(proyecto)
+        flash('Proyecto creado')
+        redirect('/administracion/proyecto/list')
+
+
     @expose('sgs.templates.administracion.proyecto.list')
     def list(self):
         tmpl_context.widget = list_proyecto

@@ -25,19 +25,6 @@ from sqlalchemy.orm import class_mapper
 from tgext.admin import AdminController, AdminConfig
 
 
-models = {}
-for m in dir(model):
-    m = getattr(model, m)
-    if not inspect.isclass(m):
-        continue
-    try:
-        mapper = class_mapper(m)
-        models[m.__name__.lower()] = m
-    except:
-        pass
-
-
-
 class RootController(BaseController):
     """
     The root controller for the sgs application.

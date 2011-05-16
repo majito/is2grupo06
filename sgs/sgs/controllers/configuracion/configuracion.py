@@ -9,7 +9,7 @@ from sgs.model import DBSession
 from sgs.model.model import *
 from formencode.validators import DateConverter, Int, NotEmpty
 from sprox.tablebase import TableBase
-from sgs.controllers.configuracion.lineabase import LineaBaseRestController
+from sgs.controllers.configuracion.linea_base import LineaBaseRestController
 
 #__all__ = ['ConfiguracionController']
 

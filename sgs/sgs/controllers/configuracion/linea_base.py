@@ -21,6 +21,17 @@ class LineaBaseRestController(RestController):
         tmpl_context.widget = new_lineabase_form
         return dict(value=kw)
 
+
+    @validate(new_lineabase_form, error_handler=new)
+    @expose()
+    def post(self, _method='', **kw):
+        del kw['sprox_id']
+        lineabase = LineaBase(**kw)
+        DBSession.add(lineabase)
+        flash('Linea Base creada')
+        redirect('/administracion/linea_base/list')
+
+
     @expose('sgs.templates.desarrollo.linea_base.list')
     def list(self):
         tmpl_context.widget = list_lineabase

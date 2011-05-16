@@ -21,6 +21,17 @@ class ItemRestController(RestController):
         tmpl_context.widget = new_item_form
         return dict(value=kw)
 
+
+    @validate(new_item_form, error_handler=new)
+    @expose()
+    def post(self, _method='', **kw):
+        del kw['sprox_id']
+        item = Item(**kw)
+        DBSession.add(item)
+        flash('Item creado')
+        redirect('/desarrollo/item/list')
+
+
     @expose('sgs.templates.desarrollo.item.list')
     def list(self):
         tmpl_context.widget = list_item

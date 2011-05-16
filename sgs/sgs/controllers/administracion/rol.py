@@ -21,6 +21,17 @@ class RolRestController(RestController):
         tmpl_context.widget = new_rol_form
         return dict(value=kw)
 
+
+    @validate(new_rol_form, error_handler=new)
+    @expose()
+    def post(self, _method='', **kw):
+        del kw['sprox_id']
+        rol = Rol(**kw)
+        DBSession.add(rol)
+        flash('Rol creado')
+        redirect('/administracion/rol/list')
+
+
     @expose('sgs.templates.administracion.rol.list')
     def list(self):
         tmpl_context.widget = list_rol

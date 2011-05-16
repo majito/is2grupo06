@@ -21,6 +21,17 @@ class FaseRestController(RestController):
         tmpl_context.widget = new_fase_form
         return dict(value=kw)
 
+
+    @validate(new_fase_form, error_handler=new)
+    @expose()
+    def post(self, _method='', **kw):
+        del kw['sprox_id']
+        fase = Fase(**kw)
+        DBSession.add(fase)
+        flash('Fase creada')
+        redirect('/desarrollo/fase/list')
+
+
     @expose('sgs.templates.desarrollo.fase.list')
     def list(self):
         tmpl_context.widget = list_fase

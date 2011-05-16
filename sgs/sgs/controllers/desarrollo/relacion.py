@@ -21,6 +21,17 @@ class RelacionRestController(RestController):
         tmpl_context.widget = new_relacion_form
         return dict(value=kw)
 
+
+    @validate(new_relacion_form, error_handler=new)
+    @expose()
+    def post(self, _method='', **kw):
+        del kw['sprox_id']
+        relacion = Relacion(**kw)
+        DBSession.add(relacion)
+        flash('Relacion creada')
+        redirect('/desarrollo/relacion/list')
+
+
     @expose('sgs.templates.desarrollo.relacion.list')
     def list(self):
         tmpl_context.widget = list_relacion

@@ -88,4 +88,12 @@ class ListRelacionFiller(TableFiller):
     __model__ = Relacion
 list_relacion_filler = ListRelacionFiller(DBSession)
 
+#LINEA BASE
+class ListLineaBase(TableBase):
+    __model__ = LineaBase
+#    __omit_fields__ = ['genre_id', 'movie_id']
+list_lineabase = ListLineaBase(DBSession)
 
+class ListLineaBaseFiller(TableFiller):
+    __model__ = LineaBase
+list_lineabase_filler = ListLineaBaseFiller(DBSession)

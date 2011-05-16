@@ -5,10 +5,9 @@ from tg.controllers import RestController, redirect
 from pylons import request
 from tg.decorators import expose, validate, with_trailing_slash
 from sgs.model import DBSession
-from sgs.model.model import Usuario, Permiso, Proyecto, Fase, TipoItem, Item, LineaBase, Relacion, VersionadoItem, ArchivosExternos, Historico, Rol, DetalleTipoItem, DetalleItem, DetalleVersionadoItem
+from sgs.model.model import *
 from formencode.validators import DateConverter, Int, NotEmpty
 from sprox.tablebase import TableBase
-
 from sprox.formbase import AddRecordForm
 
 class NewUsuarioForm(AddRecordForm):
@@ -45,3 +44,8 @@ class NewRelacionForm(AddRecordForm):
     __model__ = Relacion
 #    __omit_fields__ = ['genre_id', 'movie_id']
 new_relacion_form = NewRelacionForm(DBSession)
+
+class NewLineaBaseForm(AddRecordForm):
+    __model__ = LineaBase
+#    __omit_fields__ = ['genre_id', 'movie_id']
+new_lineabase_form = NewLineaBaseForm(DBSession)
