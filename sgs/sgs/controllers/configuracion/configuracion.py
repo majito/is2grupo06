@@ -16,7 +16,7 @@ from sgs.controllers.configuracion.linea_base import LineaBaseRestController
 class ConfiguracionController(BaseController):
 
     
-    lineabase = LineaBaseRestController()
+    linea_base = LineaBaseRestController()
 
 
     @expose('sgs.templates.configuracion.configuracion')

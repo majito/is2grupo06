@@ -16,7 +16,7 @@ from sgs.form.list import *
 class LineaBaseRestController(RestController):
 
 
-    @expose('sgs.templates.desarrollo.linea_base.new')
+    @expose('sgs.templates.configuracion.linea_base.new')
     def new(self, **kw):
         tmpl_context.widget = new_lineabase_form
         return dict(value=kw)
@@ -29,11 +29,11 @@ class LineaBaseRestController(RestController):
         lineabase = LineaBase(**kw)
         DBSession.add(lineabase)
         flash('Linea Base creada')
-        redirect('/administracion/linea_base/list')
+        redirect('/configuracion/linea_base/list')
 
 
-    @expose('sgs.templates.desarrollo.linea_base.list')
-    def list(self):
+    @expose('sgs.templates.configuracion.linea_base.list')
+    def list(self, **kw):
         tmpl_context.widget = list_lineabase
         value = list_lineabase_filler.get_value()
         return dict(value=value)

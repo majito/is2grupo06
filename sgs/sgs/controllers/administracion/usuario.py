@@ -16,6 +16,12 @@ __all__ = ['UsuarioRestController']
 
 class UsuarioRestController(RestController):
 
+    @expose('sgs.templates.administracion.usuario.list')
+    def list(self, **kw):
+        tmpl_context.widget = list_usuario
+        value = list_usuario_filler.get_value()
+        return dict(value=value)
+
 
     @expose('sgs.templates.administracion.usuario.new')
     def new(self, **kw):
@@ -48,7 +54,7 @@ class UsuarioRestController(RestController):
 
     @validate(edit_usuario_form, error_handler=edit)
     @expose()
-    def put(self, _method='', **kw):
+    def put(self, _method='', id=0, **kw):
         del kw['sprox_id']
         usuario = Usuario(**kw)
         DBSession.merge(usuario)
@@ -56,11 +62,12 @@ class UsuarioRestController(RestController):
         redirect("/administracion/usuario/list")
 
 
-    @expose('sgs.templates.administracion.usuario.list')
-    def list(self, **kw):
-        tmpl_context.widget = list_usuario
-        value = list_usuario_filler.get_value()
-        return dict(value=value)
+    @expose()
+    def post_delete(self, id, **kw):
+        DBSession.delete(DBSession.query(Usuario).get(id))
+        redirect('/administracion/usuario/list')
+
+
 
 
 

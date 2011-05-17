@@ -16,6 +16,9 @@ from sgs.controllers.desarrollo.tipo_item import TipoItemRestController
 from sgs.controllers.desarrollo.item import ItemRestController
 from sgs.controllers.desarrollo.relacion import RelacionRestController
 
+from sgs.controllers.desarrollo.detalle_tipo_item import DetalleTipoItemRestController
+from sgs.controllers.desarrollo.detalle_item import DetalleItemRestController
+
 #__all__ = ['DesarrolloController']
 
 class DesarrolloController(BaseController):
@@ -30,6 +33,10 @@ class DesarrolloController(BaseController):
     item = ItemRestController()
 
     relacion = RelacionRestController()
+
+    detalle_tipo_item = DetalleTipoItemRestController()
+
+    detalle_item = DetalleItemRestController()
 
 
     @expose('sgs.templates.desarrollo.desarrollo')
