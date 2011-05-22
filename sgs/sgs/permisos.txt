@@ -1,0 +1,73 @@
+ADMINISTRADOR
+- Gestionar usuario: ver, crear, modificar y eliminar cualquier usuario
+- Gestionar proyecto: ver, crear y eliminar cualquier proyecto
+- Gestionar rol: ver, crear, modificar y eliminar cualquier rol
+- Asignar rol: solo de administrador y lider de proyecto
+
+LIDER DE PROYECTO
+- Gestionar proyecto: modificar el proyecto en el cual es lider
+- Asignar rol: a los usuarios que pertenecen a su proyecto
+- Gestionar fase: ver, crear, modificar y eliminar fases en su proyecto
+- Asociar usuarios ya existentes a su proyecto
+- Gestionar tipos de item: ver, crear, importar, modificar y eliminar con respecto a su proyecto
+- Gestionar item: ver, crear, modificar y eliminar items con respecto a su proyecto
+- Gestionar relacion: ver, crear, modificar y eliminar relaciones con respecto a los items de su proyecto
+- Gestionar linea base: ver, abrir y cerrar lineas base, con respecto a su proyecto
+
+PARTICIPANTE
+- Gestionar usuario: ver y modificar su usuario
+- Gestionar proyecto: ver el proyecto al cual pertenece
+- Gestionar rol: ver su rol
+
+
+*****PERMISOS*****
+ver_usuario_todos		ADMINISTRADOR		
+ver_usuario						PARTICIPANTE
+crear_usuario			ADMINISTRADOR
+modificar_usuario		ADMINISTRADOR		PARTICIPANTE
+eliminar_usuario		ADMINISTRADOR
+
+ver_proyecto_todos		ADMINISTRADOR		
+ver_proyecto						PARTICIPANTE - LIDER DE PROYECTO
+crear_proyecto			ADMINISTRADOR
+modificar_proyecto		LIDER DE PROYECTO
+eliminar_proyecto		ADMINISTRADOR
+asignar_usuario_proyecto	LIDER DE PROYECTO
+
+ver_rol_todos			ADMINISTRADOR		
+ver_rol							PARTICIPANTE
+crear_rol			ADMINISTRADOR
+modificar_rol			ADMINISTRADOR
+eliminar_rol			ADMINISTRADOR
+asignar_rol_admin		ADMINISTRADOR
+asignar_rol_lider		LIDER DE PROYECTO
+
+
+
+ver_fase			LIDER DE PROYECTO
+crear_fase			LIDER DE PROYECTO
+modificar_fase			LIDER DE PROYECTO
+eliminar_fase			LIDER DE PROYECTO
+
+ver_tipoitem			LIDER DE PROYECTO
+crear_tipoitem			LIDER DE PROYECTO
+modificar_tipoitem		LIDER DE PROYECTO
+eliminar_tipoitem		LIDER DE PROYECTO
+
+ver_item			LIDER DE PROYECTO
+crear_item			LIDER DE PROYECTO		
+modificar_item			LIDER DE PROYECTO
+eliminar_item			LIDER DE PROYECTO
+
+ver_relacion			LIDER DE PROYECTO
+crear_relacion			LIDER DE PROYECTO
+modificar_relacion		LIDER DE PROYECTO
+eliminar_relacion		LIDER DE PROYECTO
+
+ver_lineabase			LIDER DE PROYECTO
+abrir_lineabase			LIDER DE PROYECTO
+cerrar_lineabase		LIDER DE PROYECTO
+
+
+
+

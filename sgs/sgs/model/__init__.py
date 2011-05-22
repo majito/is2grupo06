@@ -59,5 +59,5 @@ def init_model(engine):
     #mapper(Reflected, t_reflected)
 
 # Import your model modules here.
-from sgs.model.auth import *
+#from sgs.model.auth import *
 from sgs.model.model import *

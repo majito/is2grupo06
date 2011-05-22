@@ -8,23 +8,25 @@ from sgs.model.model import *
 from formencode.validators import DateConverter, Int, NotEmpty
 from sprox.formbase import EditableForm
 from sprox.fillerbase import EditFormFiller
-
-from sprox.formbase import AddRecordForm
+from sprox.dojo.formbase import DojoEditableForm
 
 
 #USUARIO
-class EditUsuarioForm(EditableForm):
-    __model__ = Usuario
+class EditUsuarioForm(DojoEditableForm):
+	__model__ = Usuario
+	__omit_fields__ = ['cod_usuario', 'proyect']
+	__field_order__ = ['nombre', 'user_name', '_password', 'password', 'groups']
 edit_usuario_form = EditUsuarioForm(DBSession)
 
 class EditUsuarioFiller(EditFormFiller):
-    __model__ = Usuario
+	__model__ = Usuario
 edit_usuario_filler = EditUsuarioFiller(DBSession)
 
 
 #PROYECTO
-class EditProyectoForm(EditableForm):
+class EditProyectoForm(DojoEditableForm):
     __model__ = Proyecto
+    __omit_fields__ = ['cod_proyecto', 'fases']
 edit_proyecto_form = EditProyectoForm(DBSession)
 
 class EditProyectoFiller(EditFormFiller):
@@ -33,8 +35,9 @@ edit_proyecto_filler = EditProyectoFiller(DBSession)
 
 
 #ROL
-class EditRolForm(EditableForm):
+class EditRolForm(DojoEditableForm):
     __model__ = Rol
+    __omit_fields__ = ['users', 'cod_rol']
 edit_rol_form = EditRolForm(DBSession)
 
 class EditRolFiller(EditFormFiller):
@@ -43,8 +46,9 @@ edit_rol_filler = EditRolFiller(DBSession)
 
 
 #FASE
-class EditFaseForm(EditableForm):
+class EditFaseForm(DojoEditableForm):
     __model__ = Fase
+    __omit_fields__ = ['cod_fase']
 edit_fase_form = EditFaseForm(DBSession)
 
 class EditFaseFiller(EditFormFiller):
@@ -53,8 +57,9 @@ edit_fase_filler = EditFaseFiller(DBSession)
 
 
 #TIPO DE ITEM
-class EditTipoItemForm(EditableForm):
+class EditTipoItemForm(DojoEditableForm):
     __model__ = TipoItem
+    __omit_fields__ = ['cod_tipoitem']
 edit_tipoitem_form = EditTipoItemForm(DBSession)
 
 class EditTipoItemFiller(EditFormFiller):
@@ -63,8 +68,9 @@ edit_tipoitem_filler = EditTipoItemFiller(DBSession)
 
 
 #DETALLE TIPO DE ITEM
-class EditDetalleTipoItemForm(EditableForm):
+class EditDetalleTipoItemForm(DojoEditableForm):
     __model__ = DetalleTipoItem
+    __omit_fields__ = ['cod_detalletipoitem']
 edit_detalletipoitem_form = EditDetalleTipoItemForm(DBSession)
 
 class EditDetalleTipoItemFiller(EditFormFiller):
@@ -73,8 +79,9 @@ edit_detalletipoitem_filler = EditDetalleTipoItemFiller(DBSession)
 
 
 #ITEM
-class EditItemForm(EditableForm):
+class EditItemForm(DojoEditableForm):
     __model__ = Item
+    __omit_fields__ = ['cod_item']
 edit_item_form = EditItemForm(DBSession)
 
 class EditItemFiller(EditFormFiller):
@@ -83,8 +90,9 @@ edit_item_filler = EditItemFiller(DBSession)
 
 
 #DETALLE DE ITEM
-class EditDetalleItemForm(EditableForm):
+class EditDetalleItemForm(DojoEditableForm):
     __model__ = DetalleItem
+    __omit_fields__ = ['cod_detalleitem']
 edit_detalleitem_form = EditDetalleItemForm(DBSession)
 
 class EditDetalleItemFiller(EditFormFiller):
@@ -92,8 +100,9 @@ class EditDetalleItemFiller(EditFormFiller):
 edit_detalleitem_filler = EditDetalleItemFiller(DBSession)
 
 #RELACION
-class EditRelacionForm(EditableForm):
+class EditRelacionForm(DojoEditableForm):
     __model__ = Relacion
+    __omit_fields__ = ['cod_relacion']
 edit_relacion_form = EditRelacionForm(DBSession)
 
 class EditRelacionFiller(EditFormFiller):

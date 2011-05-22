@@ -10,8 +10,6 @@ from sgs.form.list import *
 from sgs.form.edit import *
 
 
-#from sprox.formbase import AddRecordForm
-
 #__all__ = ['TipoItemRestController']
 
 class DetalleTipoItemRestController(RestController):
@@ -34,7 +32,15 @@ class DetalleTipoItemRestController(RestController):
     @expose()
     def post(self, _method='', **kw):
         del kw['sprox_id']
-        detalletipoitem = DetalleTipoItem(**kw)
+        detalletipoitem = DetalleTipoItem()
+        #detalletipoitem.id_detalletipoitem = kw['id_detalletipoitem']
+        detalletipoitem.nombre_atributo = kw['nombre_atributo']
+	detalletipoitem.tipo_dato = kw['tipo_dato']
+	
+	for i in kw['tipositem']:
+	    p = DBSession.query(TipoItem).get(i)
+	    detalletipoitem.tipositem.append(p)
+
         DBSession.add(detalletipoitem)
         flash('Detalle de Tipo de item creado')
         redirect('/desarrollo/detalle_tipo_item/list')
@@ -53,9 +59,11 @@ class DetalleTipoItemRestController(RestController):
 
     @validate(edit_detalletipoitem_form, error_handler=edit)
     @expose()
-    def put(self, _method='', id=0, **kw):
+    def put(self, id='', **kw):
         del kw['sprox_id']
-        detalletipoitem = DetalleTipoItem(**kw)
+        detalletipoitem = DBSession.query(DetalleTipoItem).get(int(id))
+        detalletipoitem.nombre_atributo = kw['nombre_atributo']
+        detalletipoitem.tipo_dato = kw['tipo_dato']
         DBSession.merge(detalletipoitem)
         flash('Detalle de Tipo de item modificado')
         redirect("/desarrollo/detalle_tipo_item/list")

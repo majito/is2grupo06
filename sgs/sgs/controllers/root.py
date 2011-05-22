@@ -47,7 +47,7 @@ class RootController(BaseController):
 
     configuracion = ConfiguracionController()
 
-    #admin = Catwalk(model, DBSession)
+    admin = Catwalk(model, DBSession)
     
     error = ErrorController()
 

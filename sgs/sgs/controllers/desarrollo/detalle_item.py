@@ -53,9 +53,12 @@ class DetalleItemRestController(RestController):
 
     @validate(edit_detalleitem_form, error_handler=edit)
     @expose()
-    def put(self, _method='', id=0, **kw):
+    def put(self, id='', **kw):
         del kw['sprox_id']
-        detalleitem = DetalleItem(**kw)
+        detalleitem = DBSession.query(DetalleItem).get(int(id))
+        detalleitem.nombre_atributo = kw['nombre_atributo']
+        detalleitem.tipo_dato = kw['tipo_dato']
+        detalleitem.valor = kw['valor']
         DBSession.merge(detalleitem)
         flash('Detalle item modificado')
         redirect("/desarrollo/detalle_item/list")

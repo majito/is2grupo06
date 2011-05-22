@@ -10,8 +10,6 @@ from sgs.form.list import *
 from sgs.form.edit import *
 
 
-#from sprox.formbase import AddRecordForm
-
 #__all__ = ['FaseRestController']
 
 class FaseRestController(RestController):
@@ -33,7 +31,19 @@ class FaseRestController(RestController):
     @expose()
     def post(self, _method='', **kw):
         del kw['sprox_id']
-        fase = Fase(**kw)
+        fase = Fase()
+        #fase.id_fase = kw['id_fase']#fase.fases=[]
+        for f in kw['proyectos']:
+            p = DBSession.query(Proyecto).get(f)
+            fase.proyectos.append(p)
+        fase.cod_fase = kw['cod_fase']
+        fase.nombre_fase = kw['nombre_fase']
+        fase.descripcion = kw['descripcion']
+        #fase.fases=[]
+        for f in kw['proyectos']:
+            p = DBSession.query(Proyecto).get(f)
+            fase.proyectos.append(p)
+
         DBSession.add(fase)
         flash('Fase creada')
         redirect('/desarrollo/fase/list')
@@ -52,9 +62,16 @@ class FaseRestController(RestController):
 
     @validate(edit_fase_form, error_handler=edit)
     @expose()
-    def put(self, _method='', id=0, **kw):
+    def put(self, id='', **kw):
         del kw['sprox_id']
-        fase = Fase(**kw)
+        fase = DBSession.query(Fase).get(int(id))
+        fase.nombre_fase = kw['nombre_fase']
+        fase.descripcion = kw['descripcion']
+        #fase.proyectos=[]
+        for f in kw['proyectos']:
+            p = DBSession.query(Proyecto).get(f)
+            fase.proyectos.append(p)
+
         DBSession.merge(fase)
         flash('Fase modificada')
         redirect("/desarrollo/fase/list")

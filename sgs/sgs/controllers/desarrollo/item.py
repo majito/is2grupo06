@@ -10,8 +10,6 @@ from sgs.form.list import *
 from sgs.form.edit import *
 
 
-#from sprox.formbase import AddRecordForm
-
 #__all__ = ['ItemRestController']
 
 class ItemRestController(RestController):
@@ -57,7 +55,10 @@ class ItemRestController(RestController):
     @expose()
     def put(self, _method='', id=0, **kw):
         del kw['sprox_id']
-        item = Item(**kw)
+        item = DBSession.query(Item).get(id)
+        item.nombre_item = kw['nombre_item']
+        item.descripcion = kw['descripcion']
+        item.estado = kw['estado']
         DBSession.merge(item)
         flash('Item modificado')
         redirect("/desarrollo/item/list")

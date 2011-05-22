@@ -25,7 +25,7 @@ from sqlalchemy.orm import relation, synonym
 
 from sgs.model import DeclarativeBase, metadata, DBSession
 
-__all__ = ['User', 'Group', 'Permission']
+__all__ = ['Usuario', 'Rol', 'Permiso']
 
 
 #{ Association tables
@@ -33,19 +33,36 @@ __all__ = ['User', 'Group', 'Permission']
 
 # This is the association table for the many-to-many relationship between
 # groups and permissions. This is required by repoze.what.
-group_permission_table = Table('tg_group_permission', metadata,
-    Column('group_id', Integer, ForeignKey('tg_group.group_id',
-        onupdate="CASCADE", ondelete="CASCADE")),
-    Column('permission_id', Integer, ForeignKey('tg_permission.permission_id',
-        onupdate="CASCADE", ondelete="CASCADE"))
-)
+#group_permission_table = Table('tg_group_permission', metadata,
+#    Column('group_id', Integer, ForeignKey('tg_group.group_id',
+#        onupdate="CASCADE", ondelete="CASCADE")),
+#    Column('permission_id', Integer, ForeignKey('tg_permission.permission_id',
+#        onupdate="CASCADE", ondelete="CASCADE"))
+#)
 
 # This is the association table for the many-to-many relationship between
 # groups and members - this is, the memberships. It's required by repoze.what.
-user_group_table = Table('tg_user_group', metadata,
-    Column('user_id', Integer, ForeignKey('tg_user.user_id',
+#user_group_table = Table('tg_user_group', metadata,
+#    Column('user_id', Integer, ForeignKey('tg_user.user_id',
+#        onupdate="CASCADE", ondelete="CASCADE")),
+#    Column('group_id', Integer, ForeignKey('tg_group.group_id',
+#        onupdate="CASCADE", ondelete="CASCADE"))
+#)
+
+
+# Tabla de asociacion muchos a muchos entre Usuarios y Roles
+rol_por_usuario_tabla = Table('rol_por_usuario', metadata,
+    Column('id_rol', Integer, ForeignKey('rol.id_rol',
         onupdate="CASCADE", ondelete="CASCADE")),
-    Column('group_id', Integer, ForeignKey('tg_group.group_id',
+    Column('id_usuario', Integer, ForeignKey('usuario.id_usuario',
+        onupdate="CASCADE", ondelete="CASCADE"))
+)
+
+# Tabla de asociacion muchos a muchos entre permisos y roles
+permiso_por_rol_tabla = Table('permiso_por_rol', metadata,
+    Column('id_permiso', Integer, ForeignKey('permiso.id_permiso',
+        onupdate="CASCADE", ondelete="CASCADE")),
+    Column('id_rol', Integer, ForeignKey('rol.id_rol',
         onupdate="CASCADE", ondelete="CASCADE"))
 )
 
@@ -54,7 +71,7 @@ user_group_table = Table('tg_user_group', metadata,
 
 
 
-class Group(DeclarativeBase):
+class Rol(DeclarativeBase):
     """
     Group definition for :mod:`repoze.what`.
     
@@ -62,29 +79,40 @@ class Group(DeclarativeBase):
     
     """
     
-    __tablename__ = 'tg_group'
+    __tablename__ = 'rol'
     
     #{ Columns
     
-    group_id = Column(Integer, autoincrement=True, primary_key=True)
+    id_rol = Column(Integer, autoincrement=True, primary_key=True)
+
+    cod_rol = Column(Unicode(10), nullable=False)
+
+    nombre_rol = Column(Unicode(20), nullable=False)
+
+    descripcion = Column(Unicode(100))
+
+    usuarios = relation('Usuario', secondary=rol_por_usuario_tabla, backref='roles')
+
+
+#    group_id = Column(Integer, autoincrement=True, primary_key=True)
     
-    group_name = Column(Unicode(16), unique=True, nullable=False)
+#    group_name = Column(Unicode(16), unique=True, nullable=False)
     
-    display_name = Column(Unicode(255))
+#    display_name = Column(Unicode(255))
     
-    created = Column(DateTime, default=datetime.now)
+#    created = Column(DateTime, default=datetime.now)
     
     #{ Relations
     
-    users = relation('User', secondary=user_group_table, backref='groups')
+#    users = relation('User', secondary=user_group_table, backref='groups')
     
     #{ Special methods
     
     def __repr__(self):
-        return '<Group: name=%s>' % self.group_name
+        return '<Rol: name=%s>' % self.nombre_rol
     
     def __unicode__(self):
-        return self.group_name
+        return self.nombre_rol
     
     #}
 
@@ -92,7 +120,7 @@ class Group(DeclarativeBase):
 # The 'info' argument we're passing to the email_address and password columns
 # contain metadata that Rum (http://python-rum.org/) can use generate an
 # admin interface for your models.
-class User(DeclarativeBase):
+class Usuario(DeclarativeBase):
     """
     User definition.
     
@@ -100,13 +128,13 @@ class User(DeclarativeBase):
     least the ``user_name`` column.
     
     """
-    __tablename__ = 'tg_user'
+    __tablename__ = 'usuario'
     
     #{ Columns
 
-    user_id = Column(Integer, autoincrement=True, primary_key=True)
+    id_usuario = Column(Integer, autoincrement=True, primary_key=True)
     
-    user_name = Column(Unicode(16), unique=True, nullable=False)
+    user_name = Column(Unicode(20), unique=True, nullable=False)
     
     email_address = Column(Unicode(255), unique=True, nullable=False,
                            info={'rum': {'field':'Email'}})
@@ -116,16 +144,16 @@ class User(DeclarativeBase):
     _password = Column('password', Unicode(80),
                        info={'rum': {'field':'Password'}})
     
-    created = Column(DateTime, default=datetime.now)
+#    created = Column(DateTime, default=datetime.now)
     
     #{ Special methods
 
     def __repr__(self):
-        return '<User: email="%s", display name="%s">' % (
+        return '<Usuario: email="%s", display name="%s">' % (
                 self.email_address, self.display_name)
 
     def __unicode__(self):
-        return self.display_name or self.user_name
+        return self.user_name
     
     #{ Getters and setters
 
@@ -196,7 +224,7 @@ class User(DeclarativeBase):
         return self.password[40:] == hashed_pass.hexdigest()
 
 
-class Permission(DeclarativeBase):
+class Permiso(DeclarativeBase):
     """
     Permission definition for :mod:`repoze.what`.
     
@@ -204,20 +232,31 @@ class Permission(DeclarativeBase):
     
     """
     
-    __tablename__ = 'tg_permission'
+    __tablename__ = 'permiso'
+
+
+    id_permiso = Column(Integer, autoincrement=True, primary_key=True)
+
+    cod_permiso = Column(Unicode(10), nullable=False)
+
+    nombre_permiso = Column(Unicode(20), nullable=False)
+
+    descripcion = Column(Unicode(100))
+
+    roles = relation(Rol, secondary=permiso_por_rol_tabla, backref='permisos')   
     
     #{ Columns
 
-    permission_id = Column(Integer, autoincrement=True, primary_key=True)
+#    permission_id = Column(Integer, autoincrement=True, primary_key=True)
     
-    permission_name = Column(Unicode(16), unique=True, nullable=False)
+#    permission_name = Column(Unicode(16), unique=True, nullable=False)
     
-    description = Column(Unicode(255))
+#    description = Column(Unicode(255))
     
     #{ Relations
     
-    groups = relation(Group, secondary=group_permission_table,
-                      backref='permissions')
+#    groups = relation(Group, secondary=group_permission_table,
+#                      backref='permissions')
     
     #{ Special methods
     

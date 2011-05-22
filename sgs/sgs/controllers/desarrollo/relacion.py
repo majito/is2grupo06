@@ -52,9 +52,11 @@ class RelacionRestController(RestController):
 
     @validate(edit_relacion_form, error_handler=edit)
     @expose()
-    def put(self, _method='', id=0, **kw):
+    def put(self, id='', **kw):
         del kw['sprox_id']
-        relacion = Relacion(**kw)
+        relacion = DBSession.query(Relacion).get(int(id))
+        relacion.descripcion = kw['descripcion']
+        relacion.tiporelacion = kw['tiporelacion']
         DBSession.merge(relacion)
         flash('Relacion modificada')
         redirect("/desarrollo/relacion/list")
