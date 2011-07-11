@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://genshi.edgewall.org/"
+      xmlns:xi="http://www.w3.org/2001/XInclude">
+  <xi:include href="master.html" />
+<head/>
+<body>
+  <div style="height:0px;"> &nbsp; </div>
+  <div>
+    <div style="float:left width: 100%">
+       <table border='0'>
+         <tr><td>
+             <img src="${tg.url('/images/grafo.png')}" height="100%" width="100%"/>
+             <SPAN STYLE="position:absolute; top:250px; left:500px;background-color:#d8ecd8">
+				 <table border="0" cellpadding="0" cellspacing="0" class="tabla"><tr>
+					<th>Item 1 </th>
+					<th>Item 2 </th>
+					<th>Tipo de Relacion </th>
+					</tr>
+					<tr class="modo2" py:for="relacion in relaciones">
+					<td><p>${relacion.id_item1}</p></td>
+					<td><p>${relacion.id_item2}</p></td> 
+					<td><p>${relacion.tiporelacion}</p></td> 
+					</tr>
+				 </table>
+			</SPAN>
+<!--
+             <SPAN STYLE="position:absolute; top:450px; left:600px;background-color:#d8ecd8">
+				 <table border="0" cellpadding="0" cellspacing="0" class="tabla"><tr>
+					<th>Fase actual </th>
+					<th>Fase siguiente </th>
+					</tr>
+				 </table>
+			</SPAN>
+-->
+         </td></tr>
+       </table>
+    </div>
+  </div>
+</body>
+</html>
